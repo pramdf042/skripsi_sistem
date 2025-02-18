@@ -74,9 +74,9 @@ with st.container():
         data = pd.read_csv(file_path)
         st.write(data['Konten'].head(10))
         st.write("Data Setelah Preprocessing")
-        file_path2 = 'data preprocessing.csv'  # Ganti dengan path ke file Anda
+        file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
         data2 = pd.read_csv(file_path2)
-        st.write(data2['Ulasan'].head(10))
+        st.write(data2.head(10))
     if selected == "prediksi ulasan":
         import joblib
         # Menggunakan pandas untuk membaca file CSV
