@@ -5,7 +5,21 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import warnings
+import re
 import nltk
+from nltk.corpus import stopwords
+import time
+from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report
+
+# Download stopwords from nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+stop_words = set(stopwords.words('indonesian'))
+nltk.download('punkt_tab')
 from sklearn.feature_extraction.text import TfidfVectorizer
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
@@ -34,7 +48,7 @@ st.set_page_config(
     }
 )
 st.write("""
-<center><h2 style = "text-align: justify;">Analisi Sentimen Wisata Madura Dengan Maximum Entropy</h2></center>
+<center><h2 style = "text-align: justify;">Klasifikasi Berita Pariwisata Menggunakan Metode SVM Multikelas</h2></center>
 """,unsafe_allow_html=True)
 
 with st.container():
@@ -56,7 +70,7 @@ with st.container():
         </h3>""", unsafe_allow_html=True)
     if selected == "Dataset":
         st.write("Data Sebelum Preprocessing")
-        file_path = 'data stopword tes.csv'  # Ganti dengan path ke file Anda
+        file_path = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
         data = pd.read_csv(file_path)
         st.write(data['Ulasan'].head(10))
         st.write("Data Setelah Preprocessing")
