@@ -95,18 +95,17 @@ with st.container():
             tfidf_vector = tfidf_transformer.transform(count_vector)
             return tfidf_vector[:, selected_features]  # Select only important features
         
-            st.title("News Classification using SVM")
+        st.title("News Classification using SVM")
             
-            # Input text from user
-            user_input = st.text_area("Enter news text for classification:")
-            
-            if st.button("Predict"):
-                if user_input.strip():
-                    transformed_input = preprocess_text(user_input)
-                    prediction = model.predict(transformed_input)[0]
-                    st.success(f"Predicted Category: {prediction}")
-                else:
-                    st.warning("Please enter some text for prediction.")
+        # Input text from user
+        user_input = st.text_area("Enter news text for classification:")    
+        if st.button("Predict"):
+            if user_input.strip():
+                transformed_input = preprocess_text(user_input)
+                prediction = model.predict(transformed_input)[0]
+                st.success(f"Predicted Category: {prediction}")
+            else:
+                st.warning("Please enter some text for prediction.")
     if selected == "Implementation":
         import joblib
         # Menggunakan pandas untuk membaca file CSV
