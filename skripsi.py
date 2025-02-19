@@ -10,6 +10,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 import time
+import log2
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
@@ -79,33 +80,39 @@ with st.container():
         data2 = pd.read_csv(file_path2)
         st.write(data2['processed_text'].head(10))
     if selected == "prediksi ulasan":
-        # Load pre-trained models and transformers
-        def load_pickle(file_path):
-            with open(file_path, 'rb') as file:
-                return pickle.load(file)
+        def cleaning(text):
+            text = re.sub(r'_x000D_+', ' ', text)
+            text = re.sub(r'SCROLL TO CONTINUE WITH CONTENT', ' ', text, flags=re.IGNORECASE)
+            text = re.sub(r'#[A-Za-z0-9_]+', ' ', text)
+            text = re.sub(r'\d+', ' ', text)
+            text = re.sub(r'\n', ' ', text)
+            text = re.sub(r'[-()\"#/@;:<>{}\'+=~|.!?,_]', ' ', text)
+            text = re.sub(r'\s+', ' ', text).strip()
+            return text
         
-        count_vectorizer = load_pickle("count_vectorizer.pkl")
-        tfidf_transformer = load_pickle("tfidf_transformer.pkl")
-        selected_features = load_pickle("feature_ig.pkl")
-        model = load_pickle("model_fold_4.pkl")
+        def case_folding(text):
+            return text.lower()
         
-        def preprocess_text(text):
-            """Transform input text using the loaded vectorizer and transformer."""
-            count_vector = count_vectorizer.transform([text])
-            tfidf_vector = tfidf_transformer.transform(count_vector)
-            return tfidf_vector[:, selected_features]  # Select only important features
+        def tokenization(text):
+            return nltk.tokenize.word_tokenize(text)
         
-        st.title("News Classification using SVM")
-            
-        # Input text from user
-        user_input = st.text_area("Enter news text for classification:")    
-        if st.button("Predict"):
-            if user_input.strip():
-                transformed_input = preprocess_text(user_input)
-                prediction = model.predict(transformed_input)[0]
-                st.success(f"Predicted Category: {prediction}")
-            else:
-                st.warning("Please enter some text for prediction.")
+        def remove_stopwords(text):
+            return [word for word in text if word not in stop_words]
+
+        with st.form("my_form"):
+            new_text = st.text_input('Masukkan Berita')
+            submit = st.form_submit_button("Prediksi")
+            if submit:
+                if new_text.strip():
+                    #Preprocessing Berita Baru
+                    clean_text = cleaning(new_text)
+                    folded_text = case_folding(clean_text)
+                    tokenized_text = tokenization(folded_text)
+                    filtered_text = remove_stopwords(tokenized_text)
+                    processed_text = ' '.join(filtered_text)
+                    
+                    else:
+                        st.error("Masukkan ulasan terlebih dahulu!")
     if selected == "Implementation":
         import joblib
         # Menggunakan pandas untuk membaca file CSV
