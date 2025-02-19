@@ -10,7 +10,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 import time
-import log2
+from math import log2
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
