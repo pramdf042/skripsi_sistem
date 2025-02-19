@@ -84,10 +84,10 @@ with st.container():
             with open(file_path, 'rb') as file:
                 return pickle.load(file)
         
-        count_vectorizer = load_pickle("/mnt/data/count_vectorizer.pkl")
-        tfidf_transformer = load_pickle("/mnt/data/tfidf_transformer.pkl")
-        selected_features = load_pickle("/mnt/data/feature_ig.pkl")
-        model = load_pickle("/mnt/data/model_fold_4.pkl")
+        count_vectorizer = load_pickle("count_vectorizer.pkl")
+        tfidf_transformer = load_pickle("tfidf_transformer.pkl")
+        selected_features = load_pickle("feature_ig.pkl")
+        model = load_pickle("model_fold_4.pkl")
         
         def preprocess_text(text):
             """Transform input text using the loaded vectorizer and transformer."""
