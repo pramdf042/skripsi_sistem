@@ -79,35 +79,34 @@ with st.container():
         data2 = pd.read_csv(file_path2)
         st.write(data2['processed_text'].head(10))
     if selected == "prediksi ulasan":
-        with st.form("my_form"):
-            st.subheader("Implementasi")
-            def load_vectorizer():
-                with open("count_vectorizer.pkl", "rb") as file:
-                    count_vectorizer = pickle.load(file)
-                return count_vectorizer
-            def transform_text(text, count_vectorizer):
-                text_freq_count = count_vectorizer.transform([text])
-                return text_freq_count
+        # Load pre-trained models and transformers
+def load_pickle(file_path):
+    with open(file_path, 'rb') as file:
+        return pickle.load(file)
 
-            st.title("Transformasi Teks ke TF-IDF")
-            
-            # Load TF-IDF vectorizer
-            st.write("Memuat vectorizer...")
-            count_vectorizer = load_vectorizer()
-            st.success("Vectorizer berhasil dimuat!")
-            
-            # Input dari pengguna
-            text_input = st.text_area("Masukkan teks:")
-            submit_button = st.form_submit_button("Transformasi")
-            
-            if submit_button:
-                if text_input.strip():
-                    transformed_text = transform_text(text_input, count_vectorizer)
-                    st.write("Hasil Transformasi TF-IDF:")
-                    st.write(transformed_text.toarray())
-                else:
-                    st.warning("Mohon masukkan teks terlebih dahulu.")
+count_vectorizer = load_pickle("/mnt/data/count_vectorizer.pkl")
+tfidf_transformer = load_pickle("/mnt/data/tfidf_transformer.pkl")
+selected_features = load_pickle("/mnt/data/feature_ig.pkl")
+model = load_pickle("/mnt/data/model_fold_4.pkl")
 
+def preprocess_text(text):
+    """Transform input text using the loaded vectorizer and transformer."""
+    count_vector = count_vectorizer.transform([text])
+    tfidf_vector = tfidf_transformer.transform(count_vector)
+    return tfidf_vector[:, selected_features]  # Select only important features
+
+    st.title("News Classification using SVM")
+    
+    # Input text from user
+    user_input = st.text_area("Enter news text for classification:")
+    
+    if st.button("Predict"):
+        if user_input.strip():
+            transformed_input = preprocess_text(user_input)
+            prediction = model.predict(transformed_input)[0]
+            st.success(f"Predicted Category: {prediction}")
+        else:
+            st.warning("Please enter some text for prediction.")
     if selected == "Implementation":
         import joblib
         # Menggunakan pandas untuk membaca file CSV
