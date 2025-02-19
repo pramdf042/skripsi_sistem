@@ -100,10 +100,8 @@ with st.container():
             return [word for word in text if word not in stop_words]
 
         # Load the CountVectorizer and TfidfTransformer
-        with open("count_vectorizer.pkl", "rb") as cv_file:
-            count_vectorizer = pickle.load(cv_file)
-        with open("tfidf_transformer.pkl", "rb") as tfidf_file:
-            tfidf_transformer = pickle.load(tfidf_file)
+        count_vectorizer = joblib.load("count_vectorizer.pkl")
+        tfidf_transformer = joblib.load("tfidf_transformer.pkl")
         
         with st.form("my_form"):
             new_text = st.text_input('Masukkan Berita')
