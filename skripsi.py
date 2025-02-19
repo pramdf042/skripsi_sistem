@@ -105,6 +105,7 @@ with st.container():
         #Load Seleksi Fitur dan Model
         feature_selection = joblib.load("feature_selection.pkl")
         model = joblib.load("model_fold_4.pkl")
+        label_encoder = joblib.load("label_encoder.pkl")
 
         # Ambil fitur yang dipilih dari file feature_selection.pkl
         selected_features = feature_selection['selected_features']
@@ -128,16 +129,8 @@ with st.container():
         
                     # Prediksi Kategori
                     prediction = model.predict(X_new_selected)[0]
-        
-                    if prediction == 0:
-                        predicted_label == 'Alam'
-                    elif prediction == 1:
-                        predicted_label == 'Buatan'
-                    elif prediction == 2:
-                        predicted_label == 'Budaya'
-                    elif prediction == 3:
-                        predicted_label == 'Bukan Pariwisata'
-        
+                    # Konversi ke label asli
+                    predicted_label = label_encoder.inverse_transform([prediction])[0]
                     st.success(f"Prediksi Kategori Berita: **{predicted_label}**")
                 else:
                     st.error("Masukkan ulasan terlebih dahulu!")
