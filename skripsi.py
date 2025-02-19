@@ -99,6 +99,12 @@ with st.container():
         def remove_stopwords(text):
             return [word for word in text if word not in stop_words]
 
+        # Load the CountVectorizer and TfidfTransformer
+        with open("count_vectorizer.pkl", "rb") as cv_file:
+            count_vectorizer = pickle.load(cv_file)
+        with open("tfidf_transformer.pkl", "rb") as tfidf_file:
+            tfidf_transformer = pickle.load(tfidf_file)
+        
         with st.form("my_form"):
             new_text = st.text_input('Masukkan Berita')
             submit = st.form_submit_button("Prediksi")
@@ -110,7 +116,11 @@ with st.container():
                     tokenized_text = tokenization(folded_text)
                     filtered_text = remove_stopwords(tokenized_text)
                     processed_text = ' '.join(filtered_text)
+                    # Transformasi TF-IDF
+                    text_counts = count_vectorizer.transform([processed_text])
+                    text_tfidf = tfidf_transformer.transform(text_counts)
                     
+                    st.write("TF-IDF Representation:", text_tfidf)
                     else:
                         st.error("Masukkan ulasan terlebih dahulu!")
     if selected == "Implementation":
