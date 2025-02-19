@@ -102,6 +102,12 @@ with st.container():
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
+        #Load Seleksi Fitur dan Model
+        feature_selection = joblib.load("feature_selection.pkl")
+        model = joblib.load("model_fold_4.pkl")
+
+        # Ambil fitur yang dipilih dari file feature_selection.pkl
+        selected_features = feature_selection['selected_features']
         
         with st.form("my_form"):
             new_text = st.text_input('Masukkan Berita')
@@ -117,8 +123,13 @@ with st.container():
                     # Transformasi TF-IDF
                     text_counts = count_vectorizer.transform([processed_text])
                     text_tfidf = tfidf_transformer.transform(text_counts)
-                    
-                    st.write("TF-IDF Representation:", text_tfidf)
+                    # Pilih hanya fitur yang relevan
+                    X_new_selected = text_tfidf[:, selected_features]
+        
+                    # Prediksi Kategori
+                    prediction = model.predict(X_new_selected)[0]
+        
+                    st.success(f"Prediksi Kategori Berita: **{prediction}**")
                 else:
                     st.error("Masukkan ulasan terlebih dahulu!")
     if selected == "Implementation":
