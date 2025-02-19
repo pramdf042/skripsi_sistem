@@ -121,8 +121,8 @@ with st.container():
                     text_tfidf = tfidf_transformer.transform(text_counts)
                     
                     st.write("TF-IDF Representation:", text_tfidf)
-                    else:
-                        st.error("Masukkan ulasan terlebih dahulu!")
+                else:
+                    st.error("Masukkan ulasan terlebih dahulu!")
     if selected == "Implementation":
         import joblib
         # Menggunakan pandas untuk membaca file CSV
