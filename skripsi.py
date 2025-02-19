@@ -135,7 +135,7 @@ with st.container():
                         predicted_label == 'Buatan'
                     elif prediction == 2:
                         predicted_label == 'Budaya'
-                    else:
+                    elif prediction == 3:
                         predicted_label == 'Bukan Pariwisata'
         
                     st.success(f"Prediksi Kategori Berita: **{predicted_label}**")
