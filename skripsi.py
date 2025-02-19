@@ -21,7 +21,7 @@ nltk.download('punkt')
 nltk.download('stopwords')
 stop_words = set(stopwords.words('indonesian'))
 nltk.download('punkt_tab')
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.chrome.options import Options
