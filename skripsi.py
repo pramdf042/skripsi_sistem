@@ -98,8 +98,9 @@ with st.container():
             
             # Input dari pengguna
             text_input = st.text_area("Masukkan teks:")
+            submit_button = st.form_submit_button("Transformasi")
             
-            if st.button("Transformasi"):
+            if submit_button:
                 if text_input.strip():
                     transformed_text = transform_text(text_input, count_vectorizer)
                     st.write("Hasil Transformasi TF-IDF:")
