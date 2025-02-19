@@ -39,7 +39,7 @@ def get_driver():
 warnings.filterwarnings('ignore')
 
 st.set_page_config(
-    page_title="Sentimen Analysis",
+    page_title="Klasifikasi Berita",
     page_icon='https://lh5.googleusercontent.com/p/AF1QipNgmGyncJl5jkHg6gnxdTSTqOKtIBpy-kl9PgDz=w540-h312-n-k-no',
     layout='centered',
     initial_sidebar_state="expanded",
@@ -57,8 +57,8 @@ with st.container():
     with st.sidebar:
         selected = option_menu(
         st.write("""<h3 style = "text-align: center;"></h3>""",unsafe_allow_html=True), 
-        ["Home", "Dataset","prediksi ulasan","Implementation"], 
-            icons=['house', 'bar-chart','check2-square', 'person'], menu_icon="cast", default_index=0,
+        ["Home", "Dataset","Implementation"], 
+            icons=['house', 'bar-chart', 'person'], menu_icon="cast", default_index=0,
             styles={
                 "container": {"padding": "0!important", "background-color": "#412a7a"},
                 "icon": {"color": "white", "font-size": "18px"}, 
@@ -79,7 +79,7 @@ with st.container():
         file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
         data2 = pd.read_csv(file_path2)
         st.write(data2['processed_text'].head(10))
-    if selected == "Implementasi":
+    if selected == "Implementation":
         def cleaning(text):
             text = re.sub(r'_x000D_+', ' ', text)
             text = re.sub(r'SCROLL TO CONTINUE WITH CONTENT', ' ', text, flags=re.IGNORECASE)
