@@ -1,5 +1,6 @@
 from streamlit_option_menu import option_menu
 import joblib
+import pickle
 import streamlit as st
 import pandas as pd 
 import numpy as np
@@ -78,34 +79,33 @@ with st.container():
         data2 = pd.read_csv(file_path2)
         st.write(data2['processed_text'].head(10))
     if selected == "prediksi ulasan":
-        import joblib
-        # Menggunakan pandas untuk membaca file CSV
-        file_path = 'data stopword tes.csv'  # Ganti dengan path ke file Anda
-        data = pd.read_csv(file_path)
-        vectorizer = TfidfVectorizer(max_features=100)
-        X = vectorizer.fit_transform(data['stopword']).toarray()
-        loaded_model = joblib.load('final_maxent_model.pkl')
-        loaded_vectorizer = joblib.load('tfidf (1).pkl')
         with st.form("my_form"):
             st.subheader("Implementasi")
-            ulasan = st.text_input('Masukkan ulasan')  # Input ulasan dari pengguna
-            submit = st.form_submit_button("Prediksi")
-            if submit:
-                if ulasan.strip():  # Validasi input tidak kosong
-                    # Transformasikan ulasan ke bentuk vektor
-                    new_X = vectorizer.transform([ulasan]).toarray()
-        
-                    # Membuat dictionary dengan nama feature sesuai format model
-                    new_data_features = {f"feature_{j}": new_X[0][j] for j in range(new_X.shape[1])}
-                    
-                    # Prediksi menggunakan model
-                    new_pred = loaded_model.classify(new_data_features)
-        
-                    # Tampilkan hasil prediksi
-                    st.subheader('Hasil Prediksi')
-                    st.write(f"Prediction for New Data: {new_pred}")
+            def load_vectorizer():
+                with open("count_vectorizer.pkl", "rb") as file:
+                    count_vectorizer = pickle.load(file)
+                return count_vectorizer
+            def transform_text(text, count_vectorizer):
+                text_freq_count = count_vectorizer.transform([text])
+                return text_freq_count
+
+            st.title("Transformasi Teks ke TF-IDF")
+            
+            # Load TF-IDF vectorizer
+            st.write("Memuat vectorizer...")
+            count_vectorizer = load_vectorizer()
+            st.success("Vectorizer berhasil dimuat!")
+            
+            # Input dari pengguna
+            text_input = st.text_area("Masukkan teks:")
+            
+            if st.button("Transformasi"):
+                if text_input.strip():
+                    transformed_text = transform_text(text_input, count_vectorizer)
+                    st.write("Hasil Transformasi TF-IDF:")
+                    st.write(transformed_text.toarray())
                 else:
-                    st.error("Masukkan ulasan terlebih dahulu!")
+                    st.warning("Mohon masukkan teks terlebih dahulu.")
 
     if selected == "Implementation":
         import joblib
