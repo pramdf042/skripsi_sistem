@@ -111,7 +111,7 @@ with st.container():
         selected_features = feature_selection['selected_features']
         
         with st.form("my_form"):
-            new_text = st.text_input('Masukkan Berita')
+            new_text = st.text_area('Masukkan Berita')
             submit = st.form_submit_button("Prediksi")
             if submit:
                 if new_text.strip():
