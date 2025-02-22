@@ -109,6 +109,7 @@ with st.container():
 
         # Ambil fitur yang dipilih dari file feature_selection.pkl
         selected_features = feature_selection['selected_features']
+        st.write("seleksi fitur :",selected_features.shape)
         
         with st.form("my_form"):
             new_text = st.text_area('Masukkan Berita')
@@ -124,8 +125,10 @@ with st.container():
                     # Transformasi TF-IDF
                     text_counts = count_vectorizer.transform([processed_text])
                     text_tfidf = tfidf_transformer.transform(text_counts)
+                    
                     # Pilih hanya fitur yang relevan
                     X_new_selected = text_tfidf[:, selected_features]
+                    st.write("terseleksi :",X_new_selected.shape)
         
                     # Prediksi Kategori
                     prediction = model.predict(X_new_selected)[0]
