@@ -74,7 +74,7 @@ with st.container():
         st.write("Data Sebelum Preprocessing")
         file_path = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
         data = pd.read_csv(file_path)
-        st.write(data['Konten']['Kategori'])
+        st.write(data)
         # st.write("Data Setelah Preprocessing")
         # file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
         # data2 = pd.read_csv(file_path2)
