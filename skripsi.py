@@ -74,11 +74,11 @@ with st.container():
         st.write("Data Sebelum Preprocessing")
         file_path = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
         data = pd.read_csv(file_path)
-        st.write(data['Konten'].head(10))
-        st.write("Data Setelah Preprocessing")
-        file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
-        data2 = pd.read_csv(file_path2)
-        st.write(data2['processed_text'].head(10))
+        st.write(data['Konten']['Kategori'])
+        # st.write("Data Setelah Preprocessing")
+        # file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
+        # data2 = pd.read_csv(file_path2)
+        # st.write(data2['processed_text'].head(10))
     if selected == "Implementation":
         def cleaning(text):
             text = re.sub(r'_x000D_+', ' ', text)
