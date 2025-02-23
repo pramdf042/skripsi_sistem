@@ -129,6 +129,9 @@ with st.container():
     if selected == "Seleksi Fitur":
         file_path = 'processed_text.csv'  # Ganti dengan path ke file Anda
         data = pd.read_csv(file_path)
+        file_path2 = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
+        data2 = pd.read_csv(file_path2)
+        y = data2['Kategori']
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
