@@ -125,7 +125,6 @@ with st.container():
         df_tfidf = pd.DataFrame(X_tfidf.toarray(),columns=count_vectorizer.get_feature_names_out())
         st.write("TF-IDF")
         st.write(df_tfidf.head(10))
-    if selected == "Seleksi Fitur":
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
