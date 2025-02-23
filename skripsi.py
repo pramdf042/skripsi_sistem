@@ -140,16 +140,15 @@ with st.container():
         # #TF-IDF
         X_tfidf = tfidf_transformer.fit_transform(X_count)
         information_gain = joblib.load("count_ig.pkl")
-        ig_values = information_gain(X_count, y)
-        # # Menampilkan seluruh fitur beserta nilai Information Gain-nya
-        # feature_names = np.array(count_vectorizer.get_feature_names_out())
-        # feature_ig_df = pd.DataFrame({
-        #     'Feature': feature_names,
-        #     'Information Gain': feature_ig
-        # })
+        # Menampilkan seluruh fitur beserta nilai Information Gain-nya
+        feature_names = np.array(count_vectorizer.get_feature_names_out())
+        feature_ig_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Information Gain': information_gain
+        })
         
-        # # Menampilkan hasilnya
-        # st.write(feature_ig_df.sort_values(by='Information Gain', ascending=False))
+        # Menampilkan hasilnya
+        feature_ig_df.sort_values(by='Information Gain', ascending=False)
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
