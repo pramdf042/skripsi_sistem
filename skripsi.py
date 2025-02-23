@@ -76,6 +76,8 @@ with st.container():
         data = pd.read_csv(file_path)
         st.write(data)
     if selected == "Preprocessing Data":
+        file_path = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
+        data = pd.read_csv(file_path)
         def cleaning(text):
             text = re.sub(r'_x000D_+', ' ', text)
             text = re.sub(r'SCROLL TO CONTINUE WITH CONTENT', ' ', text, flags=re.IGNORECASE)
