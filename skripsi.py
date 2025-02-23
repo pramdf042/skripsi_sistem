@@ -139,8 +139,8 @@ with st.container():
         X_count = count_vectorizer.fit_transform(data['processed_text'])
         # #TF-IDF
         X_tfidf = tfidf_transformer.fit_transform(X_count)
-        information_gain = joblib.load("ig.pkl")
-        st.write(information_gain)
+        information_gain = joblib.load("count_ig.pkl")
+        ig_values = information_gain(X_count, y)
         # # Menampilkan seluruh fitur beserta nilai Information Gain-nya
         # feature_names = np.array(count_vectorizer.get_feature_names_out())
         # feature_ig_df = pd.DataFrame({
