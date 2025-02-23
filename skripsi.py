@@ -148,8 +148,7 @@ with st.container():
         })
         
         # Menampilkan hasilnya
-        feature_ig_df.sort_values(by='Information Gain', ascending=False)
-        st.write(feature_ig_df)
+        st.write(feature_ig_df.sort_values(by='Information Gain', ascending=False))
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
