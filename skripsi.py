@@ -122,8 +122,9 @@ with st.container():
         X_count = count_vectorizer.fit_transform(data['processed_text'])
         #TF-IDF
         X_tfidf = tfidf_transformer.fit_transform(X_count)
+        df_tfidf = pd.DataFrame(X_tfidf.toarray(),columns=count_vectorizer.get_feature_names_out())
         st.write("TF-IDF")
-        st.write(X_tfidf)
+        st.write(df_tfidf)
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
