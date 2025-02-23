@@ -113,6 +113,8 @@ with st.container():
         st.write("Data Setelah Preproceesing Data")
         st.write(data['processed_text'])
     if selected == "TF-IDF":
+        file_path = 'processed_text.csv'  # Ganti dengan path ke file Anda
+        data = pd.read_csv(file_path)
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
