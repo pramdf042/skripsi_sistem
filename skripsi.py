@@ -57,8 +57,8 @@ with st.container():
     with st.sidebar:
         selected = option_menu(
         st.write("""<h3 style = "text-align: center;"></h3>""",unsafe_allow_html=True), 
-        ["Home", "Dataset","Preprocessing Data", "TF-IDF", "Implementation"], 
-            icons=['house', 'bar-chart', 'database', 'list', 'person'], menu_icon="cast", default_index=0,
+        ["Home", "Dataset","Preprocessing Data", "TF-IDF", "Seleksi Fitur", "Implementation"], 
+            icons=['house', 'bar-chart', 'database', 'list', 'trash', 'person'], menu_icon="cast", default_index=0,
             styles={
                 "container": {"padding": "0!important", "background-color": "#412a7a"},
                 "icon": {"color": "white", "font-size": "18px"}, 
@@ -125,6 +125,8 @@ with st.container():
         df_tfidf = pd.DataFrame(X_tfidf.toarray(),columns=count_vectorizer.get_feature_names_out())
         st.write("TF-IDF")
         st.write(df_tfidf.head(10))
+    if selected == "Seleksi Fitur":
+        
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
