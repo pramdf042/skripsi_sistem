@@ -120,7 +120,6 @@ with st.container():
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
         #Frekuensi Kata
         X_count = count_vectorizer.fit_transform(data['processed_text'])
-        df_count = pd.DataFrame(X_count.toarray(),columns=count_vectorizer.get_feature_names_out())
         #TF-IDF
         X_tfidf = tfidf_transformer.fit_transform(X_count)
         df_tfidf = pd.DataFrame(X_tfidf.toarray(),columns=count_vectorizer.get_feature_names_out())
