@@ -57,8 +57,8 @@ with st.container():
     with st.sidebar:
         selected = option_menu(
         st.write("""<h3 style = "text-align: center;"></h3>""",unsafe_allow_html=True), 
-        ["Home", "Dataset","Preprocessing Data","Implementation"], 
-            icons=['house', 'bar-chart', 'settings', 'person'], menu_icon="cast", default_index=0,
+        ["Home", "Dataset","Preprocessing Data", "TF-IDF", "Implementation"], 
+            icons=['house', 'bar-chart', 'database', 'list', 'person'], menu_icon="cast", default_index=0,
             styles={
                 "container": {"padding": "0!important", "background-color": "#412a7a"},
                 "icon": {"color": "white", "font-size": "18px"}, 
@@ -112,6 +112,18 @@ with st.container():
         data['processed_text'] = data['remove_stopwords'].apply(lambda x: ' '.join(x))
         st.write("Data Setelah Preproceesing Data")
         st.write(data['processed_text'])
+    if selected == "TF-IDF":
+        # Load the CountVectorizer and TfidfTransformer
+        count_vectorizer = joblib.load("count_vectorizer.pkl")
+        tfidf_transformer = joblib.load("tfidf_transformer.pkl")
+        #Frekuensi Kata
+        X_count = count_vectorizer.fit_transform(data['processed_text'])
+        st.write("Frekuensi Kata")
+        st.write(X_count)
+        #TF-IDF
+        X_tfidf = tfidf_transformer.fit_transform(X_count)
+        st.write("TF-IDF")
+        st.write(X_tfidf)
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
