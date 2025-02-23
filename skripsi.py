@@ -149,7 +149,7 @@ with st.container():
         
         # Menampilkan hasilnya
         st.write("Fitur Sebelum Diseleksi")
-        st.write("Jumlah Fitur :", len(featur_names))
+        st.write("Jumlah Fitur :", len(feature_names))
         st.write(feature_ig_df.sort_values(by='Information Gain', ascending=False))
 
         threshold = 2
