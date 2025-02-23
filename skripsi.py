@@ -125,6 +125,28 @@ with st.container():
         df_tfidf = pd.DataFrame(X_tfidf.toarray(),columns=count_vectorizer.get_feature_names_out())
         st.write("TF-IDF")
         st.write(df_tfidf.head(10))
+
+    if selected == "Seleksi Fitur":
+        file_path = 'processed_text.csv'  # Ganti dengan path ke file Anda
+        data = pd.read_csv(file_path)
+        # Load the CountVectorizer and TfidfTransformer
+        count_vectorizer = joblib.load("count_vectorizer.pkl")
+        tfidf_transformer = joblib.load("tfidf_transformer.pkl")
+        #Frekuensi Kata
+        X_count = count_vectorizer.fit_transform(data['processed_text'])
+        # #TF-IDF
+        X_tfidf = tfidf_transformer.fit_transform(X_count)
+        information_gain = joblib.load("ig.pkl")
+        feature_ig = information_gain(X_count, y)
+        # Menampilkan seluruh fitur beserta nilai Information Gain-nya
+        feature_names = np.array(count_vectorizer.get_feature_names_out())
+        feature_ig_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Information Gain': feature_ig
+        })
+        
+        # Menampilkan hasilnya
+        st.write(feature_ig_df.sort_values(by='Information Gain', ascending=False))
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
