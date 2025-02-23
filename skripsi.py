@@ -57,8 +57,8 @@ with st.container():
     with st.sidebar:
         selected = option_menu(
         st.write("""<h3 style = "text-align: center;"></h3>""",unsafe_allow_html=True), 
-        ["Home", "Dataset","Implementation"], 
-            icons=['house', 'bar-chart', 'person'], menu_icon="cast", default_index=0,
+        ["Home", "Dataset","Preprocessing Data","Implementation"], 
+            icons=['house', 'bar-chart', 'settings', 'person'], menu_icon="cast", default_index=0,
             styles={
                 "container": {"padding": "0!important", "background-color": "#412a7a"},
                 "icon": {"color": "white", "font-size": "18px"}, 
@@ -75,11 +75,7 @@ with st.container():
         file_path = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
         data = pd.read_csv(file_path)
         st.write(data)
-        # st.write("Data Setelah Preprocessing")
-        # file_path2 = 'processed_text.csv'  # Ganti dengan path ke file Anda
-        # data2 = pd.read_csv(file_path2)
-        # st.write(data2['processed_text'].head(10))
-    if selected == "Implementation":
+    if selected == "Preprocessing Data":
         def cleaning(text):
             text = re.sub(r'_x000D_+', ' ', text)
             text = re.sub(r'SCROLL TO CONTINUE WITH CONTENT', ' ', text, flags=re.IGNORECASE)
@@ -98,7 +94,23 @@ with st.container():
         
         def remove_stopwords(text):
             return [word for word in text if word not in stop_words]
-
+        
+        data['cleaned'] = data['Konten'].apply(cleaning)
+        st.write("Data Setelah Proses Cleaning")
+        st.write(data['cleaned'])
+        data['case_folding'] = data['cleaned'].apply(case_folding)
+        st.write("Data Setelah Proses Case Folding")
+        st.write(data['case_folding'])
+        data['tokenization'] = data['case_folding'].apply(tokenization)
+        st.write("Data Setelah Proses Tokenizing")
+        st.write(data['tokenization'])
+        data['remove_stopwords'] = data['tokenization'].apply(remove_stopwords)
+        st.write("Data Setelah Proses Stopwords Removal")
+        st.write(data['remove_stopwords'])
+        data['processed_text'] = data['remove_stopwords'].apply(lambda x: ' '.join(x))
+        st.write("Data Setelah Preproceesing Data")
+        st.write(data['processed_text'])
+    if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
