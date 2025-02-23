@@ -148,7 +148,24 @@ with st.container():
         })
         
         # Menampilkan hasilnya
+        st.write("Fitur Sebelum Diseleksi")
+        st.write("Jumlah Fitur :", len(featur_names))
         st.write(feature_ig_df.sort_values(by='Information Gain', ascending=False))
+
+        threshold = 2
+        cutoff = (threshold / 100) * information_gain.max()
+        selected_features = np.where(information_gain > cutoff)[0]
+        selected_feature_names = np.array(count_vectorizer.get_feature_names_out())[selected_features]
+        selected_ig_values = information_gain[selected_features]
+        
+        # Buat DataFrame
+        st.write("Fitur Setelah Diseleksi")
+        st.write("Jumlah Fitur :", len(selected_feature_names))
+        df_selected_features = pd.DataFrame({
+            "Feature": selected_feature_names,
+            "Information Gain": selected_ig_values
+        })
+        st.write(df_selected_features.sort_values(by='Information Gain', ascending=False))
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
