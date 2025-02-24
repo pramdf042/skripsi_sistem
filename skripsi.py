@@ -209,9 +209,10 @@ with st.container():
         accuracy = accuracy_score(y_test, y_pred)
         report = classification_report(y_test, y_pred)
         
-        st.write(f'Accuracy: {accuracy:.4f}')
-        st.write('Classification Report:')
-        st.write(report)
+        st.title("Evaluasi Model SVM")
+        st.write(f"### Akurasi: {accuracy:.2f}%")
+        st.write("### Classification Report")
+        st.dataframe(pd.DataFrame(report).transpose())
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
