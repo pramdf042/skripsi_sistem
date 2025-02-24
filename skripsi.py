@@ -254,7 +254,7 @@ with st.container():
         
         with st.form("my_form"):
             new_text = st.text_area('Masukkan Berita')
-            submit = st.form_submit_button("Klasifikasi")
+            submit = st.form_submit_button("Prediksi")
             if submit:
                 if new_text.strip():
                     #Preprocessing Berita Baru
