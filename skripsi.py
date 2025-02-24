@@ -195,7 +195,7 @@ with st.container():
         label_encoder = joblib.load("label_encoder.pkl")
         y_encoded = label_encoder.fit_transform(y)
         y_pred = model.predict(X_selected)
-        st.write("Akurasi:", accuracy_score(y_encode, y_pred))
+        st.write("Akurasi:", accuracy_score(y_encoded, y_pred))
         st.write("Classification Report:\n", classification_report(y_encoded, y_pred))
         
     if selected == "Implementation":
