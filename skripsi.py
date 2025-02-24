@@ -1,5 +1,4 @@
 from streamlit_option_menu import option_menu
-from sklearn.metrics import classification_report, accuracy_score
 import joblib
 import pickle
 import streamlit as st
@@ -16,7 +15,7 @@ from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 
 # Download stopwords from nltk
 nltk.download('punkt')
@@ -177,6 +176,9 @@ with st.container():
         file_path2 = 'dataskripsi.csv'  # Ganti dengan path ke file Anda
         data2 = pd.read_csv(file_path2)
         y = data2['Kategori']
+        # Encode label kategori menjadi angka
+        label_encoder = LabelEncoder()
+        y_encoded = label_encoder.fit_transform(y)
         # Load the CountVectorizer and TfidfTransformer
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
@@ -192,11 +194,24 @@ with st.container():
         X_selected = X_tfidf[:, selected_features]
         #Modeling
         model = joblib.load("model_fold_4_baru.pkl")
-        label_encoder = joblib.load("label_encoder.pkl")
-        y_encoded = label_encoder.fit_transform(y)
-        y_pred = model.predict(X_selected)
-        st.write("Akurasi:", accuracy_score(y_encoded, y_pred))
-        st.write("Classification Report:\n", classification_report(y_encoded, y_pred))
+        # Tentukan jumlah fold yang sama dengan saat pelatihan
+        kf = KFold(n_splits=5, shuffle=True, random_state=42)
+        
+        # Ambil data dari fold ke-4 sebagai data uji
+        for fold_idx, (train_idx, test_idx) in enumerate(kf.split(X_selected), start=1):
+            if fold_idx == 4:
+                X_test, y_test = X_selected[test_idx], y_encoded[test_idx]
+                break
+        
+        # Lakukan prediksi
+        y_pred = model.predict(X_test)
+        # Evaluasi model
+        accuracy = accuracy_score(y_test, y_pred)
+        report = classification_report(y_test, y_pred)
+        
+        st.write(f'Accuracy: {accuracy:.4f}')
+        st.write('Classification Report:')
+        st.write(report)
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
