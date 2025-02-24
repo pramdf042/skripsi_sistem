@@ -207,12 +207,12 @@ with st.container():
         y_pred = model.predict(X_test)
         # Evaluasi model
         accuracy = accuracy_score(y_test, y_pred)
-        report = classification_report(y_test, y_pred)
+        report_df = pd.DataFrame(classification_report(y_test, y_pred, output_dict=True)).transpose().round(4)
         
         st.title("Evaluasi Model SVM")
         st.write(f"### Akurasi: {accuracy:.2f}%")
         st.write("### Classification Report")
-        st.dataframe(pd.DataFrame(report).transpose())
+        st.dataframe(report_df)
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
