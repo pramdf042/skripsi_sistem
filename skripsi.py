@@ -224,17 +224,33 @@ with st.container():
         st.pyplot(fig)
         
     if selected == "Implementation":
-        # Load the CountVectorizer and TfidfTransformer
+        def cleaning(text):
+            text = re.sub(r'_x000D_+', ' ', text)
+            text = re.sub(r'SCROLL TO CONTINUE WITH CONTENT', ' ', text, flags=re.IGNORECASE)
+            text = re.sub(r'#[A-Za-z0-9_]+', ' ', text)
+            text = re.sub(r'\d+', ' ', text)
+            text = re.sub(r'\n', ' ', text)
+            text = re.sub(r'[-()\"#/@;:<>{}\'+=~|.!?,_]', ' ', text)
+            text = re.sub(r'\s+', ' ', text).strip()
+            return text
+        
+        def case_folding(text):
+            return text.lower()
+        
+        def tokenization(text):
+            return nltk.tokenize.word_tokenize(text)
+        
+        def remove_stopwords(text):
+            return [word for word in text if word not in stop_words]
+        
         count_vectorizer = joblib.load("count_vectorizer.pkl")
         tfidf_transformer = joblib.load("tfidf_transformer.pkl")
-        #Load Seleksi Fitur dan Model
-        feature_selection = joblib.load("feature_selection.pkl")
-        model = joblib.load("model_fold_4.pkl")
+        information_gain = joblib.load("count_ig.pkl")
+        model = joblib.load("model_fold_4_baru.pkl")
         label_encoder = joblib.load("label_encoder.pkl")
-
-        # Ambil fitur yang dipilih dari file feature_selection.pkl
-        selected_features = feature_selection['selected_features']
-        st.write("seleksi fitur :",selected_features.shape)
+        threshold = 2
+        cutoff = (threshold / 100) * information_gain.max()
+        selected_features = np.where(information_gain > cutoff)[0]
         
         with st.form("my_form"):
             new_text = st.text_area('Masukkan Berita')
@@ -251,9 +267,8 @@ with st.container():
                     text_counts = count_vectorizer.transform([processed_text])
                     text_tfidf = tfidf_transformer.transform(text_counts)
                     
-                    # Pilih hanya fitur yang relevan
+                    # Seleksi Fitur
                     X_new_selected = text_tfidf[:, selected_features]
-                    st.write("terseleksi :",X_new_selected.shape)
         
                     # Prediksi Kategori
                     prediction = model.predict(X_new_selected)[0]
