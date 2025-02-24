@@ -192,9 +192,11 @@ with st.container():
         X_selected = X_tfidf[:, selected_features]
         #Modeling
         model = joblib.load("model_fold_4_baru.pkl")
+        label_encoder = joblib.load("label_encoder.pkl")
+        y_encoded = label_encoder.fit_transform(y)
         y_pred = model.predict(X_selected)
-        st.write("Akurasi:", accuracy_score(y, y_pred))
-        st.write("Classification Report:\n", classification_report(y, y_pred))
+        st.write("Akurasi:", accuracy_score(y_encode, y_pred))
+        st.write("Classification Report:\n", classification_report(y_encoded, y_pred))
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
