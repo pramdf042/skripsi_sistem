@@ -209,6 +209,7 @@ with st.container():
         # Evaluasi model
         accuracy = accuracy_score(y_test, y_pred)
         report_df = pd.DataFrame(classification_report(y_test, y_pred, output_dict=True)).transpose().round(4)
+        conf_matrix = confusion_matrix(y_test, y_pred)
         
         st.title("Evaluasi Model SVM")
         st.write(f"### Akurasi: {accuracy * 100:.2f}%")
