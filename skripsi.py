@@ -1,4 +1,5 @@
 from streamlit_option_menu import option_menu
+from sklearn.metrics import classification_report, accuracy_score
 import joblib
 import pickle
 import streamlit as st
