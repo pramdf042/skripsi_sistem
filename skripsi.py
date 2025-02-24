@@ -4,6 +4,7 @@ import pickle
 import streamlit as st
 import pandas as pd 
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 import warnings
 import re
@@ -15,7 +16,7 @@ from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 
 # Download stopwords from nltk
 nltk.download('punkt')
@@ -213,6 +214,13 @@ with st.container():
         st.write(f"### Akurasi: {accuracy * 100:.2f}%")
         st.write("### Classification Report")
         st.dataframe(report_df)
+        # Plot Confusion Matrix
+        st.write("### Confusion Matrix")
+        fig, ax = plt.subplots()
+        sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=label_encoder.classes_, yticklabels=label_encoder.classes_)
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        st.pyplot(fig)
         
     if selected == "Implementation":
         # Load the CountVectorizer and TfidfTransformer
