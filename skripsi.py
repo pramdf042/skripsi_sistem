@@ -274,7 +274,7 @@ with st.container():
                     prediction = model.predict(X_new_selected)[0]
                     # Konversi ke label asli
                     predicted_label = label_encoder.inverse_transform([prediction])[0]
-                    st.success(f"Prediksi Kategori Berita: **{predicted_label}**")
+                    st.success(f"Prediksi Kategori Berita Pariwisata: **{predicted_label}**")
                 else:
                     st.error("Masukkan ulasan terlebih dahulu!")
 
