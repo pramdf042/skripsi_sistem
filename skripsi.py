@@ -251,10 +251,22 @@ with st.container():
         threshold = 2
         cutoff = (threshold / 100) * information_gain.max()
         selected_features = np.where(information_gain > cutoff)[0]
+
+        # Inisialisasi session_state
+        if "new_text" not in st.session_state:
+            st.session_state.new_text = ""
+        
+        # Fungsi untuk mengosongkan text_area
+        def clear_input():
+            st.session_state.new_text = ""
         
         with st.form("my_form"):
-            new_text = st.text_area('Masukkan Berita')
-            submit = st.form_submit_button("Prediksi")
+            new_text = st.text_area('Masukkan Berita', value=st.session_state.new_text, key="new_text")
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                submit = st.form_submit_button("Prediksi")
+            with col2:
+                clear = st.form_submit_button("Bersihkan", on_click=clear_input)
             if submit:
                 if new_text.strip():
                     #Preprocessing Berita Baru
